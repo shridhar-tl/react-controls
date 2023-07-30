@@ -1,0 +1,106 @@
+.loader-container {
+    position: absolute;
+    opacity: .7;
+    z-index: 20000;
+    text-align: center;
+    background-color: #f9fbfd;
+    width: 100%;
+    height: 100%;
+}
+
+.multi-square-spin {
+    --size: 100px;
+    --stroke-width: calc(var(--size) / 6);
+    --color: currentColor;
+    --animation-timing-function: linear;
+    --animation-duration: 2s;
+    margin: auto;
+    margin-top: 100px;
+    width: var(--size);
+    height: var(--size);
+    background-image:
+        radial-gradient(circle at var(--stroke-width) var(--stroke-width), var(--color) 0%, var(--color) var(--stroke-width), transparent var(--stroke-width), transparent 100%),
+        radial-gradient(circle at calc(100% - var(--stroke-width)) var(--stroke-width), var(--color) 0%, var(--color) var(--stroke-width), transparent var(--stroke-width), transparent 100%),
+        radial-gradient(circle at calc(100% - var(--stroke-width)) calc(100% - var(--stroke-width)), var(--color) 0%, var(--color) var(--stroke-width), transparent var(--stroke-width), transparent 100%),
+        radial-gradient(circle at var(--stroke-width) calc(100% - var(--stroke-width)), var(--color) 0%, var(--color) var(--stroke-width), transparent var(--stroke-width), transparent 100%);
+    animation: var(--animation-timing-function) var(--animation-duration) infinite multi-square-spin-animation;
+}
+
+@keyframes multi-square-spin-animation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.square-spin {
+    --size: 24px;
+    --color: currentColor;
+    --animation-timing-function: linear;
+    --animation-duration: 2s;
+    margin: auto;
+    margin-top: 100px;
+    width: var(--size);
+    height: var(--size);
+    background-color: var(--color);
+    transform: rotate(0deg);
+    animation: var(--animation-timing-function) var(--animation-duration) infinite square-spin-animation;
+}
+
+@keyframes square-spin-animation {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    25% {
+        transform: scale(.5) rotate(90deg);
+    }
+
+    50% {
+        transform: scale(1) rotate(180deg);
+    }
+
+    75% {
+        transform: scale(.5) rotate(270deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+.circle-grow {
+    --size: 100px;
+    --color: currentColor;
+    --animation-timing-function: linear;
+    --animation-duration: 1s;
+    margin: auto;
+    margin-top: 100px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background-color: var(--color);
+    opacity: 0;
+    transform: scale(0);
+    animation: var(--animation-timing-function) var(--animation-duration) infinite circle-grow-animation;
+}
+
+@keyframes circle-grow-animation {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    80% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}

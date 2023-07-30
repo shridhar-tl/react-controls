@@ -1,0 +1,16 @@
+.p-button-xs {
+
+    &.p-button {
+        padding: 2px 5px;
+
+        &.p-button-icon-only {
+            padding: 2px 5px;
+            width: 27px;
+            margin-left: 3px;
+
+            &.p-button-text {
+                font-size: 18px;
+            }
+        }
+    }
+}

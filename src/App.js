@@ -2,9 +2,20 @@ import { useState } from 'react';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import { Button } from './controls';
-import { Form, FormTextBox } from './controls/form';
+import { Form, FormAutoComplete, FormTextBox } from './controls/form';
 import DndProvider, { Sortable } from './controls/drag-drop';
 import './App.css';
+
+const stateList = [
+  { value: 'ap', label: 'Andhra Pradash' },
+  { value: 'arp', label: 'Arunachal Pradash' },
+  { value: 'jk', label: 'Jammy & Kashmir' },
+  { value: 'ka', label: 'Karnataka' },
+  { value: 'kr', label: 'Kerala' },
+  { value: 'mp', label: 'Madhya Pradesh' },
+  { value: 'mr', label: 'Maharastra' },
+  { value: 'tn', label: 'Tamil Nadu' },
+];
 
 function App() {
   const [profile, setProfile] = useState({ address: { streetName: 'test street' } });
@@ -20,6 +31,9 @@ function App() {
       <Form value={profile} field='address' onChange={setProfile} schema={addressSchema} >
         <FormTextBox field='streetName' multiline />
         <FormTextBox field='city' onKey_Enter={() => alert('Enter pressed')} />
+        <FormAutoComplete field='state'
+          dataset={q => stateList.filter(s => s.label.toLowerCase().includes(q.toLowerCase()))}
+          onKey_Enter={() => alert('Enter pressed')} />
 
         <Button label="Waiting" waitFor={10} />
         <Button label="Loading" isLoading />

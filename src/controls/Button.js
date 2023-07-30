@@ -1,6 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Button as PrimeButton } from 'primereact/button';
 import useInterval from '../hooks/useInterval';
+import './Button.scss';
 
 function Button(props) {
     const {
@@ -12,8 +14,7 @@ function Button(props) {
 
         // inbuilt props
         severity = type,
-        size = "small",
-        onClick,
+        size = "xs",
 
         ...otherProps
     } = props;
@@ -28,6 +29,10 @@ function Button(props) {
 
     if (isLoading) {
         otherProps.icon = spinner;
+    }
+
+    if (size === 'xs') {
+        otherProps.className = classNames(otherProps.className, 'p-button-xs')
     }
 
     return (<PrimeButton
