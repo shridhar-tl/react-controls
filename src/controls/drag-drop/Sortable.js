@@ -6,11 +6,10 @@ import Draggable from "./Draggable";
 function Sortable(props) {
     const {
         items, accept, defaultItemType = 'any',
-        itemTypePropName = "type",
         onChange, className,
-        allowRemove = true,
-        children,
-        useDragRef
+        useDropRef,
+        addPlaceholder,
+        tagName: TagName = 'div'
     } = props;
     const containerId = React.useId();
 
@@ -33,20 +32,35 @@ function Sortable(props) {
         onChange(newItems);
     }, [items, onChange]);
 
-    return (<div className={classNames("sortable", className)}>
+    const getDraggable = getDraggableFactory(props, containerId, handleItemRemoved);
+
+    return (<TagName className={classNames("sortable", className)}>
         {items.map((item, i) => <Droppable key={i} containerId={containerId} index={i} accept={accept || defaultItemType} onDrop={itemDropped}>
-            <Draggable
-                containerId={containerId}
-                index={i}
-                item={item}
-                itemType={item[itemTypePropName] || defaultItemType}
-                onRemove={allowRemove && handleItemRemoved}
-            >
-                {useDragRef ? (handle) => children(item, i, handle) : children(item, i)}
-            </Draggable>
+            {useDropRef ? (droppable) => getDraggable(item, i, droppable) : getDraggable(item, i)}
         </Droppable>)}
-        <Droppable className="drop-placeholder" index={items?.length || 0} accept={accept || defaultItemType} onDrop={itemDropped} />
-    </div>);
+        {addPlaceholder && <Droppable className="drop-placeholder" index={items?.length || 0} accept={accept || defaultItemType} onDrop={itemDropped} />}
+    </TagName>);
 }
 
 export default Sortable;
+
+function getDraggableFactory(props, containerId, handleItemRemoved) {
+    const {
+        defaultItemType = 'any',
+        itemTypePropName,
+        allowRemove = true,
+        itemTemplate,
+        children = itemTemplate,
+        useDragRef
+    } = props;
+
+    return (item, index, droppable) => (<Draggable
+        containerId={containerId}
+        index={index}
+        item={item}
+        itemType={itemTypePropName ? item[itemTypePropName] || defaultItemType : defaultItemType}
+        onRemove={allowRemove && handleItemRemoved}
+    >
+        {useDragRef ? (draggable) => children(item, index, { draggable, droppable }) : children(item, index, { droppable })}
+    </Draggable>);
+}

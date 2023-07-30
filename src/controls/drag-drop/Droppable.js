@@ -19,8 +19,8 @@ function Droppable(props) {
         }),
     }), [onDrop, index, args, id, containerId]);
 
-    if (children === 'function') {
-        return children({ canDrop, isOver });
+    if (typeof children === 'function') {
+        return children({ dropRef, canDrop, isOver });
     } else {
         const elClassName = classNames('droppable', className, {
             'drop-allowed': canDrop,
