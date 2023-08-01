@@ -9,6 +9,7 @@ function Sortable(props) {
         onChange, className,
         useDropRef,
         addPlaceholder,
+        placeholder,
         tagName: TagName = 'div'
     } = props;
     const containerId = React.useId();
@@ -23,6 +24,7 @@ function Sortable(props) {
 
     const itemDropped = React.useCallback((source, target) => {
         const newItems = [...items];
+
         if (source.containerId === target.containerId) {
             newItems.splice(source.index, 1);
         }
@@ -38,7 +40,7 @@ function Sortable(props) {
         {items.map((item, i) => <Droppable key={i} containerId={containerId} index={i} accept={accept || defaultItemType} onDrop={itemDropped}>
             {useDropRef ? (droppable) => getDraggable(item, i, droppable) : getDraggable(item, i)}
         </Droppable>)}
-        {addPlaceholder && <Droppable className="drop-placeholder" index={items?.length || 0} accept={accept || defaultItemType} onDrop={itemDropped} />}
+        {(addPlaceholder || placeholder) && <Droppable containerId={containerId} className="drop-placeholder" index={items?.length || 0} accept={accept || defaultItemType} onDrop={itemDropped}>{placeholder}</Droppable>}
     </TagName>);
 }
 

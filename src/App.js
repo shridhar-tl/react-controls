@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        {JSON.stringify(profile)}
+        {JSON.stringify(profile, null, 2)}
       </div>
 
       <br /><br /><br />
