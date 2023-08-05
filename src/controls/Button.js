@@ -32,7 +32,18 @@ function Button(props) {
     }
 
     if (size === 'xs') {
-        otherProps.className = classNames(otherProps.className, 'p-button-xs')
+        otherProps.className = classNames(otherProps.className, 'p-button-xs');
+    }
+
+    if (!otherProps.label) {
+        let { icon, ...remaining } = otherProps;
+
+        if (typeof icon === 'string') {
+            icon = (<span className={icon} />);
+            remaining.className = classNames(otherProps.className, 'btn-icon-only');
+        }
+
+        return (<button {...remaining}>{icon}</button>);
     }
 
     return (<PrimeButton
