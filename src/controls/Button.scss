@@ -1,7 +1,7 @@
 .p-button-xs {
 
     &.p-button {
-        padding: 2px 5px;
+        padding: 2px 8px;
 
         &.p-button-icon-only {
             padding: 2px 5px;
@@ -30,4 +30,8 @@ button.btn-icon-only {
     &:hover {
         background-color: rgba(9, 30, 66, 0.08)
     }
+}
+
+.w-100pr {
+    width: 100%;
 }
