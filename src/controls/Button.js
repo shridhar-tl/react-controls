@@ -11,16 +11,24 @@ function Button(props) {
         waitFor,
         isLoading,
         spinner = "fa fa-spinner fa-spin",
+        args,
 
         // inbuilt props
         severity = type,
         size = "xs",
+        onClick,
 
         ...otherProps
     } = props;
 
     const [{ remaining }, setResult] = React.useState({ remaining: waitFor });
     useInterval(setResult, 1, waitFor);
+
+    const handleClick = React.useCallback((e) => {
+        onClick?.(e, args);
+    }, [args, onClick]);
+
+    otherProps.onClick = handleClick;
 
     if (remaining) {
         otherProps.disabled = true;

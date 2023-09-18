@@ -1,29 +1,31 @@
-import { createContext, useCallback, useContext } from 'react';
+import React from 'react';
+import { getPathValue, setPathValue } from 'react-controls/common/utils';
 
-const FormContext = createContext({});
+const FormContext = React.createContext({});
 
 const Provider = FormContext.Provider;
 
-function Form({ value: valueObj, field: objectKey, errors, schema, children, onChange }) {
+function Form({ value: valueObj, field: objectKey, args, errors, schema, children, onChange }) {
     const api = {
         onChange: (val, field, others) => {
             const fieldKey = objectKey ? `${objectKey}.${field}` : field;
 
-            const newValue = setFieldValue(valueObj, fieldKey, val);
+            const newValue = setPathValue(valueObj, fieldKey, val);
 
-            onChange(newValue, objectKey, { ...others });
+            onChange(newValue, objectKey, { fieldArgs: others, args });
         },
-        getProps: (fieldProps) => {
-            const { field, value } = fieldProps;
+        getProps: (fieldProps, options) => {
+            const { valueFieldProp = 'value' } = options || {};
+            const { field, [valueFieldProp]: value } = fieldProps;
 
             if (!field) {
-                return { value };
+                return { [valueFieldProp]: value };
             }
 
             const fieldKey = objectKey ? `${objectKey}.${field}` : field;
 
             return {
-                value: getFieldValue(valueObj, fieldKey),
+                [valueFieldProp]: getPathValue(valueObj, fieldKey),
                 hasError: false,
                 errorMessage: ''
             };
@@ -35,68 +37,38 @@ function Form({ value: valueObj, field: objectKey, errors, schema, children, onC
 
 export default Form;
 
-export function connect(Component) {
+export function useUpdate() {
+    const form = React.useContext(FormContext);
+    return form.onChange;
+}
+
+export function connect(Component, options) {
+    const { valueFieldProp = 'value' } = options || {};
+
     return function (props) {
-        const { field, value: inputValue, onChange, ...otherProps } = props;
-        const form = useContext(FormContext);
+        const form = React.useContext(FormContext);
 
-        const { value = inputValue, hasError, errorMessage } = form?.getProps(props);
+        if (!form?.getProps || !props.field) {
+            return (<Component {...props} />);
+        }
 
-        const handleChange = useCallback((newValue, field, otherArgs) => {
+        const { field, [valueFieldProp]: inputValue, onChange, ...otherProps } = props;
+
+        const { [valueFieldProp]: value = inputValue, hasError, errorMessage } = form.getProps(props, options);
+
+        otherProps[valueFieldProp] = value;
+
+        const handleChange = React.useCallback((newValue, field, otherArgs) => {
             form?.onChange(newValue, field, otherArgs);
             onChange?.(newValue, field, otherArgs);
         }, [onChange, form]);
 
         return (<Component
             field={field}
-            value={value}
             hasError={hasError}
             errorMessage={errorMessage}
             {...otherProps}
             onChange={handleChange}
         />);
     }
-}
-
-
-function getFieldValue(obj, key) {
-    if (!obj && key) {
-        return undefined;
-    }
-
-    if (!key) {
-        return obj;
-    }
-
-    if (!key.includes('.')) {
-        return obj[key];
-    }
-
-    const firstSeparator = key.indexOf('.');
-    const curKey = key.substring(0, firstSeparator);
-    const subKey = key.substring(firstSeparator + 1);
-
-    return getFieldValue(obj[curKey], subKey);
-}
-
-function setFieldValue(obj, key, value) {
-    if (!key) {
-        return value;
-    }
-
-    if (key.includes('.')) {
-        const firstSeparator = key.indexOf('.');
-        const rootKey = key.substring(0, firstSeparator);
-        const subKey = key.substring(firstSeparator + 1);
-
-        if (!obj) {
-            obj = {};
-        }
-
-        obj = { ...obj, [rootKey]: setFieldValue(obj[rootKey], subKey, value) };
-
-        return obj;
-    }
-
-    return { ...obj, [key]: value };
 }

@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { useDrag } from 'react-dnd';
 
 function Draggable(props) {
@@ -16,7 +16,7 @@ function Draggable(props) {
 
     const [{ canDrag, isDragging }, dragRef] = useDrag(() => ({
         type: itemType,
-        item: { index, item, id, containerId },
+        item: { index, item, itemType, id, containerId },
         end: (item, monitor) => {
             if (!onRemove || !monitor.didDrop()) {
                 return;

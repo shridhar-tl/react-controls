@@ -3,11 +3,18 @@ import { useDrop } from "react-dnd";
 
 function Droppable(props) {
     const { containerId,
-        index, args, id, children, accept = 'any', className, testId, onDrop } = props;
+        index, args, id, children,
+        accept = 'any', className,
+        testId, onDrop
+    } = props;
 
     const [{ canDrop, isOver }, dropRef] = useDrop(() => ({
         accept,
         drop: (source, monitor) => {
+            if (monitor.didDrop()) { // This means item is dropped to nested droppable
+                return;
+            }
+
             const target = { index, args, id, containerId };
             onDrop?.(source, target);
 
