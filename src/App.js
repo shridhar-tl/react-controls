@@ -2,7 +2,7 @@ import { useState } from 'react';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import { Button } from './controls';
-import { Form, FormAutoComplete, FormTextBox } from './controls/form';
+import { Form, FormAutoComplete, FormSelectBox, FormTextBox } from './controls/form';
 import DndProvider, { Sortable } from './controls/drag-drop';
 import './App.css';
 
@@ -34,6 +34,7 @@ function App() {
         <FormAutoComplete field='state'
           dataset={q => stateList.filter(s => s.label.toLowerCase().includes(q.toLowerCase()))}
           onKey_Enter={() => alert('Enter pressed')} />
+        <FormSelectBox field='ungroupedStates' dataset={stateList} />
 
         <Button label="Waiting" waitFor={10} />
         <Button label="Loading" isLoading />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPathValue, setPathValue } from 'react-controls/common/utils';
+import { getPathValue, setPathValue } from '../../common/utils';
 
 const FormContext = React.createContext({});
 
