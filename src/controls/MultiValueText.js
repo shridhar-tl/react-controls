@@ -6,14 +6,18 @@ function MultiValueText(props) {
     $this.current.props = props;
 
     const valueChanged = React.useCallback((e) => {
-        const { onChange, field, args } = $this.current.props;
-        onChange(e.value, field, args);
+        const { onChange, field, args, clearIfEmpty } = $this.current.props;
+        if (clearIfEmpty && !e.value.length) {
+            onChange(undefined, field, args);
+        } else {
+            onChange(e.value, field, args);
+        }
     }, []);
 
     const onBlur = React.useCallback((e) => {
         let item = e.currentTarget.value?.trim();
 
-        const { value: propsValue, minItemLength = 1, useUpperCase = false, onChange } = $this.current.props;
+        const { value: propsValue, minItemLength = 1, useUpperCase = false } = $this.current.props;
 
         if (!item || item.length < minItemLength) { return; }
 
@@ -26,13 +30,18 @@ function MultiValueText(props) {
         if (!value.some(v => v.toUpperCase() === item.toUpperCase())) {
             value = [...value, item];
             e.currentTarget.value = "";
-            onChange(value);
+            valueChanged({ value });
         }
-    }, []);
+    }, [valueChanged]);
 
-    const { value, placeholder } = $this.current.props;
+    const { separator = ",", field, args, minItemLength, useUpperCase, clearIfEmpty, ...others } = props;
 
-    return (<Chips value={value} onChange={valueChanged} placeholder={placeholder} onBlur={onBlur} separator="," />);
+    return (<Chips
+        separator={separator}
+        {...others}
+        onBlur={onBlur}
+        onChange={valueChanged}
+    />);
 }
 
 export default MultiValueText;
