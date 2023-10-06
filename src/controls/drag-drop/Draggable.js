@@ -8,6 +8,7 @@ function Draggable(props) {
         index, id,
         item,
         itemType = 'any',
+        args,
         testId,
         children,
         onRemove,
@@ -16,7 +17,7 @@ function Draggable(props) {
 
     const [{ canDrag, isDragging }, dragRef] = useDrag(() => ({
         type: itemType,
-        item: { index, item, itemType, id, containerId },
+        item: { index, item, itemType, id, containerId, args },
         end: (item, monitor) => {
             if (!onRemove || !monitor.didDrop()) {
                 return;
