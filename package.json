@@ -2,18 +2,16 @@
   "name": "react-controls",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^6.1.5",
-    "@testing-library/react": "^14.1.2",
-    "@testing-library/user-event": "^14.5.1",
-    "classnames": "^2.3.2",
-    "primereact": "^9.6.4",
-    "react": "^18.2.0",
+  "peerDependencies": {
+    "classnames": "^2.5.1",
+    "primereact": "^10.8.5",
+    "react": "^18.3.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^18.2.0",
-    "react-scripts": "github:shridhar-tl/react-scripts",
-    "web-vitals": "^3.5.0"
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "react-scripts": "github:shridhar-tl/react-scripts"
   },
   "scripts": {
     "start": "react-scripts start",
