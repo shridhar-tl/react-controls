@@ -4,6 +4,7 @@ import Checkbox from './Checkbox';
 import DatePicker from './DatePicker';
 import MultiSelect from './MultiSelect';
 import MultiValueText from './MultiValueText';
+import ProgressSpinner from './ProgressSpinner';
 import RadioButton from './RadioButton';
 import SelectBox from './SelectBox';
 import TextBox from './TextBox';
@@ -17,6 +18,7 @@ export {
     DatePicker,
     MultiSelect,
     MultiValueText,
+    ProgressSpinner,
     RadioButton,
     SelectBox,
     TextBox,
